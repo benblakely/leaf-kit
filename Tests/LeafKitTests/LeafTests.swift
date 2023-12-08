@@ -224,6 +224,17 @@ final class LeafTests: XCTestCase {
         try XCTAssertEqual(render(template, ["parent": ["child": "Elizabeth"]]), expected)
     }
 
+    func testWithMergingContextAndExistingContext() throws {
+        let template = """
+        #(child) and #with(parent):#(child) and #(parent.child)#endwith
+        """
+        let expected = """
+        Catherine and Elizabeth and Elizabeth
+        """
+
+        try XCTAssertEqual(render(template, ["parent": ["child": "Elizabeth"], "child": "Catherine"]), expected)
+    }
+
     func testWithWrappingExtend() throws {
         let header = """
         <h1>#(child)</h1>

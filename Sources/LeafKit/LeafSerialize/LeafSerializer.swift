@@ -109,7 +109,8 @@ internal struct LeafSerializer {
             let dict = resolved[0].dictionary
             else { throw "expressions should resolve to a single dictionary value" }
 
-        try? serialize(body: with.body, context: dict)
+        let context = data.merging(dict) { old, new in new }
+        try? serialize(body: with.body, context: context)
     }
 
     private mutating func serialize(_ loop: Syntax.Loop, context data: [String: LeafData]) throws {
